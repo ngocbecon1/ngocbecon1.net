@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+/* LINKS */
+.link{
+display:flex;justify-content:center;align-items:center;gap:8px;
+margin:12px 0;padding:15px;border-radius:999px;
+background:rgba(255,255,255,.16);
+color:#fff;text-decoration:none;font-weight:600;
+transition:.25s;
+}
+.link:hover{
+background:#ff2f92;
+box-shadow:0 0 30px #ff2f92;
+transform:translateY(-2px);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fx"></canvas>
+
+<!-- INTRO -->
+<div id="intro">
+  <div id="brand">
+    <span style="--i:1">N</span><span style="--i:2">g</span><span style="--i:3">ọ</span>
+    <span style="--i:4">c</span><span style="--i:5"> </span>
+    <span style="--i:6">B</span><span style="--i:7">e</span>
+    <span style="--i:8">c</span><span style="--i:9">o</span><span style="--i:10">n</span>
+  </div>
+  <div id="percent">0%</div>
+  <div id="bar"><span></span></div>
+</div>
+
+<div id="tapText">Ấn vào</div>
+<div class="bubble" id="tapBubble"><span>Ấn vào</span></div>
+
+<!-- MAIN -->
+<div class="card" id="main">
+  <div class="avatar-wrap">
+    <img src="avatar.jpg" class="avatar">
+  </div>
+  <div class="name">Ngọc Becon <span class="check">✓</span></div>
+  <a class="link" href="https://www.tiktok.com/@ngocbecon" target="_blank"> TikTok</a>
+  <a class="link" href="https://www.facebook.com/share/18TVL9TCDZ/" target="_blank"> Facebook</a>
+  <a class="link" href="https://discord.gg/dv2QAwssr" target="_blank"> Discord Group</a>
+</div>
+
+<audio id="bgm" src="music.mp3" loop></audio>
+
+<script>
+/* LOADING */
+let p=0;
+const percent=document.getElementById("percent");
+const bar=document.querySelector("#bar span");
+const intro=document.getElementById("intro");
+const main=document.getElementById("main");
+const bubble=document.getElementById("tapBubble");
+const tapText=document.getElementById("tapText");
+const bgm=document.getElementById("bgm");
+
+const load=setInterval(()=>{
+p++;
+percent.innerText=p+"%";
+bar.style.width=p+"%";
+if(p>=100){
+clearInterval(load);
+intro.style.opacity=0;
+setTimeout(()=>{
+intro.style.display="none";
+bubble.style.display="flex";
+tapText.style.display="block";
+},500);
+}
+},20);
+
+/* CLICK ENTER */
+bubble.addEventListener("click",()=>{
+bubble.style.display="none";
+tapText.style.display="none";
+main.style.display="block";
+bgm.volume=0.6;
+bgm.play().catch(()=>{});
+});
+
+/* ❄️ SNOW */
+const c=document.getElementById("fx");
+const ctx=c.getContext("2d");
+let w,h,particles=[];
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+window.onresize=resize;resize();
+
+for(let i=0;i<160;i++){
+particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2,v:Math.random()*0.8+0.3});
+}
+function draw(){
+ctx.clearRect(0,0,w,h);
+ctx.fillStyle="#fff";
+particles.forEach(p=>{
+p.y+=p.v;
+if(p.y>h){p.y=0;p.x=Math.random()*w}
+ctx.globalAlpha=Math.random();
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fill();
+});
+requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html> 
